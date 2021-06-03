@@ -1,0 +1,4 @@
+descartes==1.1.0
+Fiona==1.8.20
+matplotlib==3.4.2
+Shapely==1.7.1
