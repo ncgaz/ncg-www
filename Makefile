@@ -15,13 +15,14 @@ clean:
 
 $(PYTHON): requirements.txt
 	python3 -m venv venv
-	$(PYTHON) -m pip install --upgrade pip
-	$(PYTHON) -m pip install wheel
-	$(PYTHON) -m pip install -r $<
+	$@ -m pip install --upgrade pip
+	$@ -m pip install wheel
+	$@ -m pip install -r $<
+	touch $@
 
 %_North_Carolina_State_GDB.zip:
 	curl $(GDB_HOST)/$*/GDB/$(call upper,$*)_North_Carolina_State_GDB.zip \
 	> $@
 
-map.png: $(PYTHON)
-	$(PYTHON) map.py
+map.png: map.py | $(PYTHON)
+	$(PYTHON) $<
