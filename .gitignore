@@ -1,2 +1,5 @@
 *_North_Carolina_State_GDB.zip
+.DS_Store
+dataset.ttl
+maps
 venv

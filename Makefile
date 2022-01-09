@@ -8,10 +8,10 @@ upper = $(shell echo $(1) | tr '[:lower:]' '[:upper:]')
 
 .PRECIOUS: %_North_Carolina_State_GDB.zip
 
-all: map.png
+all: maps/.done
 
 clean:
-	rm -rf venv map.png
+	rm -rf venv maps
 
 $(PYTHON): requirements.txt
 	python3 -m venv venv
@@ -24,5 +24,6 @@ $(PYTHON): requirements.txt
 	curl $(GDB_HOST)/$*/GDB/$(call upper,$*)_North_Carolina_State_GDB.zip \
 	> $@
 
-map.png: map.py | $(PYTHON)
+maps/.done: map.py | $(PYTHON)
 	$(PYTHON) $<
+	touch $@
