@@ -4,3 +4,7 @@ data
 site
 static/maps
 tools/maps/__pycache__
+tools/maps/venv
+tools/fuseki/*
+!tools/fuseki/Makefile
+tools/snowman/snowman
