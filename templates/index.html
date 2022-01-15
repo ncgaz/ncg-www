@@ -1,0 +1,12 @@
+{{ template "base" . }}
+
+{{ define "title" }}{{ end }}
+
+{{ define "content" }}
+<h1>NC Gazetteer</h1>
+<div class="mb">
+{{ range . }}
+<a href="{{ .typeid }}.html">{{ .type }}</a><br>
+{{ end }}
+{{ end }}
+</div>

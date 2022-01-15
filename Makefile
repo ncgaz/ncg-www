@@ -1,29 +1,51 @@
-PYTHON := ./venv/bin/python
-
 GDB_HOST := https://prd-tnm.s3.amazonaws.com/StagedProducts
 
 upper = $(shell echo $(1) | tr '[:lower:]' '[:upper:]')
 
-.PHONY: all clean
+.PHONY: all clean superclean serve tools/maps tools/fuseki tools/snowman
 
-.PRECIOUS: %_North_Carolina_State_GDB.zip
+.PRECIOUS: data/%_North_Carolina_State_GDB.zip
 
-all: maps/.done
+all: site/index.html
 
 clean:
-	rm -rf venv maps
+	rm -rf site
+	$(MAKE) -s -C tools/maps clean
+	$(MAKE) -s -C tools/fuseki clean
+	$(MAKE) -s -C tools/snowman clean
 
-$(PYTHON): requirements.txt
-	python3 -m venv venv
-	$@ -m pip install --upgrade pip
-	$@ -m pip install wheel
-	$@ -m pip install -r $<
-	touch $@
+superclean: clean
+	rm -rf data site static/maps
 
-%_North_Carolina_State_GDB.zip:
+serve: site/index.html
+	./tools/snowman/snowman server
+
+tools/maps tools/fuseki tools/snowman:
+	$(MAKE) -s -C $@
+
+data/dataset.ttl:
+	mkdir -p data
+	cat ../ncg-dataset/dataset.ttl \
+	> $@
+
+data/%_North_Carolina_State_GDB.zip:
+	mkdir -p data
 	curl $(GDB_HOST)/$*/GDB/$(call upper,$*)_North_Carolina_State_GDB.zip \
 	> $@
 
-maps/.done: map.py | $(PYTHON)
-	$(PYTHON) $<
+static/maps/.done: \
+data/dataset.ttl \
+data/GovtUnit_North_Carolina_State_GDB.zip \
+| tools/maps
+	./tools/maps/venv/bin/python ./tools/maps/map.py $^ static/maps
 	touch $@
+
+site/index.html: \
+static/maps/.done \
+$(wildcard *.yaml) \
+$(wildcard queries/*.rq) \
+$(wildcard templates/*.html) \
+$(wildcard templates/layouts/*.html) \
+| tools/snowman
+	./tools/snowman/snowman build \
+	| grep -vE "^Rendered page at site/NCG[[:digit:]]+\.html$$"

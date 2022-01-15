@@ -1,0 +1,9 @@
+{{ template "base" . }}
+
+{{ define "title" }} / {{ .placename }}{{ end }}
+
+{{ define "content" }}
+<h1>{{ .placename }}</h1>
+<div class="mb">A <a href="{{ .typeid }}.html">{{ .type }}</a></div>
+<div class="mb">{{ .description }}</div>
+{{ end }}

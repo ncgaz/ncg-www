@@ -1,0 +1,10 @@
+<div class="mb">
+{{ $countyname := "" }}
+{{ range . }}
+  {{ if ne (print .countyname) $countyname }}
+    <h2>{{ .countyname }}</h2>
+    {{ $countyname = (print .countyname) }}
+  {{ end }}
+  <a href="{{ .placeid }}.html">{{ .placename }}</a><br>
+{{ end }}
+</div>

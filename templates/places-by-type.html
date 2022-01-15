@@ -1,0 +1,10 @@
+<div class="mb">
+{{ $type := "" }}
+{{ range . }}
+  {{ if ne (print .type) $type }}
+    <h2>{{ .type }}</h2>
+    {{ $type = (print .type) }}
+  {{ end }}
+  <a href="{{ .placeid }}.html">{{ .placename }}</a><br>
+{{ end }}
+</div>

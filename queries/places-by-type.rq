@@ -1,0 +1,22 @@
+PREFIX afn: <http://jena.apache.org/ARQ/function#>
+PREFIX nct: <http://n2t.net/ark:/39333/ncg/type#>
+PREFIX ncv: <http://n2t.net/ark:/39333/ncg/vocab#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+
+SELECT
+?placeid
+?placename
+?countyname
+
+WHERE {
+  ?countyuri a nct:County ;
+    skos:prefLabel ?countyname .
+
+  ?placeuri a <{{.}}> ;
+    skos:prefLabel ?placename ;
+    ncv:county ?countyuri .
+
+  BIND (afn:localname(?placeuri) AS ?placeid)
+}
+
+ORDER BY ?countyname ?placename

@@ -1,0 +1,13 @@
+{{ define "base" }}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>NC Gazetteer{{ block "title" . }}{{ end }}</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body class="mx max-width line-height">
+    <div class="mt"><a href="/">NC Gazetteer</a></div>
+    {{ block "content" . }}{{ end }}
+  </body>
+</html>
+{{ end }}

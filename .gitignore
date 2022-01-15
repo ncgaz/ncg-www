@@ -1,5 +1,6 @@
-*_North_Carolina_State_GDB.zip
 .DS_Store
-dataset.ttl
-maps
-venv
+.snowman
+data
+site
+static/maps
+tools/maps/__pycache__

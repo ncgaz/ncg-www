@@ -1,0 +1,18 @@
+PREFIX afn: <http://jena.apache.org/ARQ/function#>
+PREFIX ncv: <http://n2t.net/ark:/39333/ncg/vocab#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX skosxl: <http://www.w3.org/2008/05/skos-xl#>
+
+SELECT
+?typeuri
+?typeid
+?type
+
+WHERE {
+  ?typeuri a skos:Concept ;
+    (skosxl:prefLabel/ncv:plural/skosxl:literalForm) ?type
+
+  BIND (LCASE(afn:localname(?typeuri)) AS ?typeid)
+}
+
+ORDER BY LCASE(?type)

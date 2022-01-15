@@ -1,0 +1,36 @@
+PREFIX afn: <http://jena.apache.org/ARQ/function#>
+PREFIX geojson: <https://purl.org/geojson/vocab#>
+PREFIX nct: <http://n2t.net/ark:/39333/ncg/type#>
+PREFIX ncv: <http://n2t.net/ark:/39333/ncg/vocab#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX skosxl: <http://www.w3.org/2008/05/skos-xl#>
+
+SELECT
+?placeid
+?placename
+?type
+?typeid
+?description
+(GROUP_CONCAT(?county;separator="|") as ?counties)
+
+WHERE {
+  ?type a skos:Concept ;
+    (skosxl:prefLabel/skosxl:literalForm) ?type .
+
+  ?countyuri a nct:County ;
+    skos:prefLabel ?countyname .
+
+  ?placeuri a ?typeuri ;
+    skos:prefLabel ?placename ;
+    skos:note ?note ;
+    ncv:county ?countyuri ;
+    geojson:geometry ?location .
+
+  BIND (afn:localname(?placeuri) AS ?placeid)
+  BIND (LCASE(afn:localname(?typeuri)) AS ?typeid)
+  BIND (CONCAT(afn:localname(?countyuri), ">", ?countyname) AS ?county)
+  BIND (CONCAT(IF(REGEX(?note, "^[A-Z]"), "", "… "), ?note) AS ?description)
+}
+
+GROUP BY ?placeid ?placename ?type ?typeid ?description

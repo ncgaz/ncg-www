@@ -1,0 +1,21 @@
+{{ template "base" . }}
+
+{{ define "title" }} / {{ .placename }}{{ end }}
+
+{{ define "content" }}
+<h1>{{ .placename }}</h1>
+<div class="mb">
+A <a href="{{ .typeid }}.html">{{ .type }}</a>
+{{ $counties := split .counties "|" }}
+in {{ range $index, $county := $counties }}
+  {{- if $index -}}
+    {{- if eq (add $index 1) (len $counties) }} and {{ else }}, {{ end }}
+  {{- end -}}
+  {{- $parts := split $county ">" -}}
+  <a href="{{ index $parts 0 }}.html">{{ index $parts 1 }}</a>
+{{- end }}
+</div>
+<div class="mb">{{ .description }}</div>
+<img width="560" height="196" src="maps/{{ .placeid }}-counties.png">
+<img width="560" height="196" src="maps/{{ .placeid }}.png">
+{{ end }}
