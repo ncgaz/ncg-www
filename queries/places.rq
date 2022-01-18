@@ -16,7 +16,7 @@ WHERE {
   ?typeuri a skos:Concept ;
     (skosxl:prefLabel/skosxl:literalForm) ?type .
 
-  ?placeuri a ?type ;
+  ?placeuri a ?typeuri ;
     skos:prefLabel ?placename ;
     skos:note ?note .
 

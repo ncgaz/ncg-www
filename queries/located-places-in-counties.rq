@@ -15,7 +15,7 @@ SELECT
 (GROUP_CONCAT(?county;separator="|") as ?counties)
 
 WHERE {
-  ?type a skos:Concept ;
+  ?typeuri a skos:Concept ;
     (skosxl:prefLabel/skosxl:literalForm) ?type .
 
   ?countyuri a nct:County ;
