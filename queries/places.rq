@@ -21,7 +21,10 @@ WHERE {
     skos:note ?note .
 
   FILTER NOT EXISTS { ?placeuri a nct:County }
-  FILTER NOT EXISTS { ?placeuri ncv:county ?countyuri }
+  FILTER NOT EXISTS {
+    ?placeuri ncv:county ?countyuri .
+    ?countyuri a nct:County .
+  }
 
   BIND (afn:localname(?placeuri) AS ?placeid)
   BIND (LCASE(afn:localname(?typeuri)) AS ?typeid)
