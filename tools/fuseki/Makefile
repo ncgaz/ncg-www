@@ -11,9 +11,13 @@ clean: stop
 	rm -rf !(Makefile)
 
 start: fuseki-server
-	mkdir -p run
-	./fuseki-server --file=../../data/dataset.ttl /ncg \
-	& echo $$! > run/fuseki.pid
+	if [ ! -e run/fuseki.pid ]; then \
+	mkdir -p run; \
+	./fuseki-server --quiet --file=../../data/dataset.ttl /ncg \
+	2> run/fuseki.log \
+	& echo $$! \
+	> run/fuseki.pid; \
+	fi
 
 stop:
 	if [ -e run/fuseki.pid ]; then \
