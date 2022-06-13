@@ -9,12 +9,14 @@ SELECT
 ?countyname
 
 WHERE {
-  ?countyuri a nct:County ;
-    skos:prefLabel ?countyname .
-
   ?placeuri a <{{.}}> ;
-    skos:prefLabel ?placename ;
-    ncv:county ?countyuri .
+    skos:prefLabel ?placename .
+
+  OPTIONAL {
+    ?placeuri ncv:county ?countyuri .
+    ?countyuri a nct:County ;
+    skos:prefLabel ?countyname .
+  }
 
   BIND (afn:localname(?placeuri) AS ?placeid)
 }
