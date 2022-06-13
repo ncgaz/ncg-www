@@ -241,7 +241,7 @@ def make_place_maps(
                     shape = county
 
             if shape is not None:
-                axes = setup_plot(shape, padding=0.025)
+                axes = setup_plot(shape, padding=0.050)
                 axes.add_patch(PolygonPatch(shape, fc="#fefb00", ec="#959595", lw=LW))
                 if lines is not None:
                     axes.add_collection(lines)
