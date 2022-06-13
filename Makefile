@@ -9,13 +9,13 @@ upper = $(shell echo $(1) | tr '[:lower:]' '[:upper:]')
 all: site/index.html
 
 clean:
-	rm -rf site
-	$(MAKE) -s -C tools/maps clean
-	$(MAKE) -s -C tools/fuseki clean
-	$(MAKE) -s -C tools/snowman clean
+	rm -rf site .snowman
 
 superclean: clean
 	rm -rf data site static/maps
+	$(MAKE) -s -C tools/maps clean
+	$(MAKE) -s -C tools/fuseki clean
+	$(MAKE) -s -C tools/snowman clean
 
 serve: site/index.html
 	./tools/snowman/snowman server
