@@ -21,7 +21,7 @@ serve: site/index.html
 	./tools/snowman/snowman server
 
 tools/maps tools/fuseki tools/snowman:
-	$(MAKE) -s -C $@
+	@$(MAKE) -s -C $@
 
 data/dataset.ttl:
 	mkdir -p data
