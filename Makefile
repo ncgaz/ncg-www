@@ -36,7 +36,8 @@ static/maps/.done: \
 data/dataset.ttl \
 data/GovtUnit_North_Carolina_State_GDB.zip \
 | tools/maps
-	./tools/maps/venv/bin/python -W error ./tools/maps/map.py $^ static/maps
+	./tools/maps/venv/bin/python -W error \
+	./tools/maps/map.py --no-geometry-check $^ static/maps
 	touch $@
 
 site/index.html: \

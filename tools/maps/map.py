@@ -259,6 +259,12 @@ def main() -> None:
     parser.add_argument("dataset", help="NCG dataset in Turtle format")
     parser.add_argument("geodb", help="GDB file with geometry data")
     parser.add_argument("directory", help="map images output directory")
+    parser.add_argument(
+        "--geometry-check",
+        help="check that geometries make sense",
+        default=True,
+        action=argparse.BooleanOptionalAction,
+    )
     args = parser.parse_args()
 
     Path(args.directory).mkdir(exist_ok=True)
@@ -271,8 +277,9 @@ def main() -> None:
     counties = load_counties(g, args.geodb)
     info("Loading place data ...")
     places = load_places(g)
-    info("Checking place geometries")
-    check_geometries(places, counties)
+    if args.geometry_check:
+        info("Checking place geometries")
+        check_geometries(places, counties)
     info("Calculating borders ...")
     borders = get_borders(list(counties.values()))
     info("Generating county maps ...")
