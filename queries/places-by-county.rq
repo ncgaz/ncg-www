@@ -1,7 +1,8 @@
-PREFIX afn: <http://jena.apache.org/ARQ/function#>
-PREFIX ncv: <http://n2t.net/ark:/39333/ncg/vocab#>
-PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
-PREFIX skosxl: <http://www.w3.org/2008/05/skos-xl#>
+PREFIX afn:     <http://jena.apache.org/ARQ/function#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX ncv:     <http://n2t.net/ark:/39333/ncg/vocab#>
+PREFIX skos:    <http://www.w3.org/2004/02/skos/core#>
+PREFIX skosxl:  <http://www.w3.org/2008/05/skos-xl#>
 
 SELECT
 ?placeid
@@ -9,7 +10,8 @@ SELECT
 ?type
 
 WHERE {
-  ?placeuri a ?typeuri ;
+  ?placeuri
+    dcterms:type ?typeuri ;
     skos:prefLabel ?placename ;
     ncv:county <{{.}}> .
 

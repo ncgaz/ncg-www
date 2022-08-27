@@ -1,10 +1,11 @@
-PREFIX afn: <http://jena.apache.org/ARQ/function#>
+PREFIX afn:     <http://jena.apache.org/ARQ/function#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
 PREFIX geojson: <https://purl.org/geojson/vocab#>
-PREFIX nct: <http://n2t.net/ark:/39333/ncg/type#>
-PREFIX ncv: <http://n2t.net/ark:/39333/ncg/vocab#>
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
-PREFIX skosxl: <http://www.w3.org/2008/05/skos-xl#>
+PREFIX nct:     <http://n2t.net/ark:/39333/ncg/type#>
+PREFIX ncv:     <http://n2t.net/ark:/39333/ncg/vocab#>
+PREFIX rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX skos:    <http://www.w3.org/2004/02/skos/core#>
+PREFIX skosxl:  <http://www.w3.org/2008/05/skos-xl#>
 
 SELECT
 ?placeid
@@ -18,10 +19,12 @@ WHERE {
   ?typeuri a skos:Concept ;
     (skosxl:prefLabel/skosxl:literalForm) ?type .
 
-  ?countyuri a nct:County ;
+  ?countyuri
+    dcterms:type nct:county ;
     skos:prefLabel ?countyname .
 
-  ?placeuri a ?typeuri ;
+  ?placeuri
+    dcterms:type ?typeuri ;
     skos:prefLabel ?placename ;
     skos:note ?note ;
     ncv:county ?countyuri ;

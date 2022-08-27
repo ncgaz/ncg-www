@@ -1,9 +1,10 @@
-PREFIX afn: <http://jena.apache.org/ARQ/function#>
-PREFIX nct: <http://n2t.net/ark:/39333/ncg/type#>
-PREFIX ncv: <http://n2t.net/ark:/39333/ncg/vocab#>
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
-PREFIX skosxl: <http://www.w3.org/2008/05/skos-xl#>
+PREFIX afn:     <http://jena.apache.org/ARQ/function#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX nct:     <http://n2t.net/ark:/39333/ncg/type#>
+PREFIX ncv:     <http://n2t.net/ark:/39333/ncg/vocab#>
+PREFIX rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX skos:    <http://www.w3.org/2004/02/skos/core#>
+PREFIX skosxl:  <http://www.w3.org/2008/05/skos-xl#>
 
 SELECT
 ?placeid
@@ -16,14 +17,15 @@ WHERE {
   ?typeuri a skos:Concept ;
     (skosxl:prefLabel/skosxl:literalForm) ?type .
 
-  ?placeuri a ?typeuri ;
+  ?placeuri
+    dcterms:type ?typeuri ;
     skos:prefLabel ?placename ;
     skos:note ?note .
 
-  FILTER NOT EXISTS { ?placeuri a nct:County }
+  FILTER NOT EXISTS { ?placeuri dcterms:type nct:county }
   FILTER NOT EXISTS {
     ?placeuri ncv:county ?countyuri .
-    ?countyuri a nct:County .
+    ?countyuri dcterms:type nct:county .
   }
 
   BIND (afn:localname(?placeuri) AS ?placeid)
