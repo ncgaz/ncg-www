@@ -28,7 +28,7 @@ tools/maps tools/fuseki tools/snowman:
 	@$(MAKE) -s -C $@
 
 dataset.nt:
-	cat ../ncg-dataset/dataset.nt > $@
+	[ -f ../ncg-dataset/dataset.nt ] && cat ../ncg-dataset/dataset.nt > $@
 
 data/%_State_GDB.zip:
 	mkdir -p data
