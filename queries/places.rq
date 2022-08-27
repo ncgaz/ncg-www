@@ -9,13 +9,12 @@ PREFIX skosxl:  <http://www.w3.org/2008/05/skos-xl#>
 SELECT
 ?placeid
 ?placename
-?type
-?typeid
 ?description
+(GROUP_CONCAT(?type;separator="|") as ?types)
 
 WHERE {
   ?typeuri a skos:Concept ;
-    (skosxl:prefLabel/skosxl:literalForm) ?type .
+    (skosxl:prefLabel/skosxl:literalForm) ?typename .
 
   ?placeuri
     dcterms:type ?typeuri ;
@@ -29,6 +28,8 @@ WHERE {
   }
 
   BIND (afn:localname(?placeuri) AS ?placeid)
-  BIND (LCASE(afn:localname(?typeuri)) AS ?typeid)
+  BIND (CONCAT(afn:localname(?typeuri), ">", ?typename) AS ?type)
   BIND (CONCAT(IF(REGEX(?note, "^[A-Z]"), "", "… "), ?note) AS ?description)
 }
+
+GROUP BY ?placeid ?placename ?description
