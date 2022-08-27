@@ -219,7 +219,7 @@ def get_borders(
     return borders
 
 
-def setup_plot(shape: BaseGeometry, padding: float = 0.0):
+def setup_plot(shape: BaseGeometry, padding: float = 0.1):
     minx, miny, maxx, maxy = shape.bounds  # type: ignore
     w, h = maxx - minx, maxy - miny
     # num=1 and clear=True keep from reallocating a new figure each time
