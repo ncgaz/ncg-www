@@ -1,4 +1,5 @@
 GDB_HOST := https://prd-tnm.s3.amazonaws.com/StagedProducts
+DATASET := ../ncg-dataset/dataset.nt
 
 space := $(empty) $(empty)
 upper = $(shell echo $(1) | tr '[:lower:]' '[:upper:]')
@@ -28,7 +29,7 @@ tools/maps tools/fuseki tools/snowman:
 	@$(MAKE) -s -C $@
 
 dataset.nt:
-	[ -f ../ncg-dataset/dataset.nt ] && cat ../ncg-dataset/dataset.nt > $@
+	[ -f $(DATASET) ] && cat $(DATASET) > $@ || true
 
 data/%_State_GDB.zip:
 	mkdir -p data
