@@ -6,7 +6,7 @@ state = $(subst $(space),_,$(wordlist 2,3,$(subst _, ,$1)))
 type = $(word 1,$(subst _, ,$1))
 gdbpath = $(call type,$*)/GDB/$(call upper,$(call type,$*))_$(call state,$*)
 
-.PHONY: all clean superclean serve tools/maps tools/fuseki tools/snowman
+.PHONY: all clean superclean serve tools/maps tools/fuseki tools/snowman dataset.nt
 
 .PRECIOUS: data/%_State_GDB.zip
 
@@ -27,8 +27,8 @@ serve: site/index.html
 tools/maps tools/fuseki tools/snowman:
 	@$(MAKE) -s -C $@
 
-dataset.nt: ../ncg-dataset/dataset.nt
-	cat $< > $@
+dataset.nt:
+	cat ../ncg-dataset/dataset.nt > $@
 
 data/%_State_GDB.zip:
 	mkdir -p data
