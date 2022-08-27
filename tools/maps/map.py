@@ -29,12 +29,16 @@ DPI = 560
 LW = 0.2
 MAPSIZE = (3.0, 1.05)  # w, h
 
-NCP = Namespace("http://n2t.net/ark:/39333/ncg/place/")
-NCV = Namespace("http://n2t.net/ark:/39333/ncg/vocab#")
-NCT = Namespace("http://n2t.net/ark:/39333/ncg/type#")
-GEOJSON = Namespace("https://purl.org/geojson/vocab#")
-
 # USGS data is EPSG:4269, we could reproject to EPSG:32019
+
+NCP = Namespace("http://n2t.net/ark:/39333/ncg/place/")
+
+
+def bind_prefixes(g: Graph) -> None:
+    g.bind("ncp", NCP)
+    g.bind("ncv", Namespace("http://n2t.net/ark:/39333/ncg/vocab#"))
+    g.bind("nct", Namespace("http://n2t.net/ark:/39333/ncg/type#"))
+    g.bind("geojson", Namespace("https://purl.org/geojson/vocab#"))
 
 
 def info(s: str) -> None:
@@ -365,6 +369,7 @@ def main() -> None:
     Path(args.directory).mkdir(exist_ok=True)
 
     g = Graph()
+    bind_prefixes(g)
     g.parse(args.dataset)
     info("Loading state geometry ...")
     state = load_state(args.geodbs[0])  # assume NC is the first

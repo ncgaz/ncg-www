@@ -27,8 +27,7 @@ serve: site/index.html
 tools/maps tools/fuseki tools/snowman:
 	@$(MAKE) -s -C $@
 
-data/dataset.ttl: ../ncg-dataset/dataset.ttl
-	mkdir -p data
+dataset.nt: ../ncg-dataset/dataset.nt
 	cat $< > $@
 
 data/%_State_GDB.zip:
@@ -37,7 +36,7 @@ data/%_State_GDB.zip:
 	> $@
 
 static/maps/.done: \
-data/dataset.ttl \
+dataset.nt \
 data/GovtUnit_North_Carolina_State_GDB.zip \
 data/GovtUnit_South_Carolina_State_GDB.zip \
 data/GovtUnit_Georgia_State_GDB.zip \
