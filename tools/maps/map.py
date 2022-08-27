@@ -161,39 +161,42 @@ def check_geometries(
     on_problem: Union[Callable[[str], None], Callable[[str], NoReturn]],
 ) -> None:
     checked_places = load_checked_places()
-    for uri, (geometry, place_counties) in tqdm(places.items()):
-        ncgid = uri.removeprefix(NCP)
-        if geometry is None:
-            pass
-        elif ncgid in GEOMETRY_CHECK_EXCEPTIONS:
-            pass
-        elif ncgid in checked_places:
-            pass
-        elif isinstance(geometry, Point):
-            county_geometries = [counties[c] for c in place_counties if c in counties]
-            if not any(
-                (cg.buffer(0.01).contains(geometry) for cg in county_geometries)
-            ):
-                dump_checked_places(checked_places)
-                on_problem(f"Point for {ncgid} is not in any of its counties")
-        elif isinstance(geometry, Polygon):
-            explicit_counties = set(place_counties)
-            implicit_counties = {
-                c
-                for c, mp in counties.items()
-                if mp.overlaps(geometry) or mp.within(geometry)
-            }
-            if not explicit_counties == implicit_counties:
-                msg = f"Polygon for {ncgid} does not correspond to its counties"
-                msg += "\n  linked counties are:"
-                msg += f"\n  {'|'.join(sorted(uri.removeprefix(NCP) for uri in explicit_counties))}"
-                msg += "\n  overlapping counties are:"
-                msg += f"\n  {'|'.join(sorted(uri.removeprefix(NCP) for uri in implicit_counties))}"
-                dump_checked_places(checked_places)
-                on_problem(msg)
-        else:
-            err(f"{ncgid} has an unsupported geometry type")
-        checked_places.add(ncgid)
+    try:
+        for uri, (geometry, place_counties) in tqdm(places.items()):
+            ncgid = uri.removeprefix(NCP)
+            if geometry is None:
+                pass
+            elif ncgid in GEOMETRY_CHECK_EXCEPTIONS:
+                pass
+            elif ncgid in checked_places:
+                pass
+            elif isinstance(geometry, Point):
+                county_geometries = [
+                    counties[c] for c in place_counties if c in counties
+                ]
+                if not any(
+                    (cg.buffer(0.01).contains(geometry) for cg in county_geometries)
+                ):
+                    on_problem(f"Point for {ncgid} is not in any of its counties")
+            elif isinstance(geometry, Polygon):
+                explicit_counties = set(place_counties)
+                implicit_counties = {
+                    c
+                    for c, mp in counties.items()
+                    if mp.overlaps(geometry) or mp.within(geometry)
+                }
+                if not explicit_counties == implicit_counties:
+                    msg = f"Polygon for {ncgid} does not correspond to its counties"
+                    msg += "\n  linked counties are:"
+                    msg += f"\n  {'|'.join(sorted(uri.removeprefix(NCP) for uri in explicit_counties))}"
+                    msg += "\n  overlapping counties are:"
+                    msg += f"\n  {'|'.join(sorted(uri.removeprefix(NCP) for uri in implicit_counties))}"
+                    on_problem(msg)
+            else:
+                err(f"{ncgid} has an unsupported geometry type")
+            checked_places.add(ncgid)
+    finally:
+        dump_checked_places(checked_places)
 
 
 def get_borders(
