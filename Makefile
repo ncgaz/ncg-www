@@ -49,6 +49,7 @@ data/GovtUnit_Virginia_State_GDB.zip \
 	touch $@
 
 site/index.html: \
+static/maps/.done \
 $(wildcard *.yaml) \
 $(wildcard queries/*.rq) \
 $(wildcard templates/*.html) \
