@@ -1,2 +1,2 @@
 sparql_client:
-  endpoint: "http://127.0.0.1:3030/ncg/sparql"
+  endpoint: "http://localhost:3030/ncg/sparql"
