@@ -13,10 +13,11 @@ clean: stop
 start: fuseki-server
 	if [ ! -e run/fuseki.pid ]; then \
 	mkdir -p run; \
-	./fuseki-server --quiet --file=../../dataset.nt /ncg \
+	./fuseki-server --quiet --file=../../data/dataset.nt /ncg \
 	2> run/fuseki.log \
 	& echo $$! \
 	> run/fuseki.pid; \
+	sleep 10; \
 	fi
 
 stop:
