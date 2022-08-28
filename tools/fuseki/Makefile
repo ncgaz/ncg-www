@@ -27,4 +27,4 @@ stop:
 
 fuseki-server:
 	curl $(JENA_HOST)/apache-jena-fuseki-$(JENA_VERSION).tar.gz \
-	| tar xvf - --strip-components 1
+	| tar zxvf - --strip-components 1
