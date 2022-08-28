@@ -54,10 +54,11 @@ $(wildcard queries/*.rq) \
 $(wildcard templates/*.html) \
 $(wildcard templates/layouts/*.html) \
 | tools/fuseki tools/snowman
-	$(MAKE) -s -C tools/fuseki start
-	mkdir -p .snowman
-	./tools/snowman/snowman build \
-	| tee .snowman/build_log.txt \
-	| grep -vE "^Issuing parameterized query" \
-	| grep -vE "^Rendered page at site/NCG[[:digit:]]+\.html$$"
-	$(MAKE) -s -C tools/fuseki stop
+	./fuseki-server --quiet --file=dataset.nt /ncg
+	# $(MAKE) -s -C tools/fuseki start
+	# mkdir -p .snowman
+	# ./tools/snowman/snowman build \
+	# | tee .snowman/build_log.txt \
+	# | grep -vE "^Issuing parameterized query" \
+	# | grep -vE "^Rendered page at site/NCG[[:digit:]]+\.html$$"
+	# $(MAKE) -s -C tools/fuseki stop
