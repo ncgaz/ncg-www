@@ -37,6 +37,7 @@ tools/maps tools/fuseki tools/snowman:
 	@$(MAKE) -s -C $@
 
 data/dataset.nt: $(DATASET)
+	mkdir -p data
 	cat $< > $@
 	cp $(DATASET) dataset.nt || true
 
