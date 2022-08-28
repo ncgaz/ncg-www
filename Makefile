@@ -54,7 +54,7 @@ $(wildcard queries/*.rq) \
 $(wildcard templates/*.html) \
 $(wildcard templates/layouts/*.html) \
 | tools/fuseki tools/snowman
-	./fuseki-server --quiet --file=dataset.nt /ncg
+	./tools/fuseki/fuseki-server --quiet --file=dataset.nt /ncg
 	# $(MAKE) -s -C tools/fuseki start
 	# mkdir -p .snowman
 	# ./tools/snowman/snowman build \
