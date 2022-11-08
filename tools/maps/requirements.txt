@@ -1,5 +1,5 @@
 Fiona==1.8.22
 Shapely==2.0b2
-matplotlib==3.6.1
+matplotlib==3.6.2
 rdflib==6.1.1
 tqdm==4.64.1
