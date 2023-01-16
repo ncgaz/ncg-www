@@ -1,7 +1,7 @@
 SHELL := /usr/bin/env bash
 .SHELLFLAGS := -O extglob -c
 JENA_HOST := https://dlcdn.apache.org/jena/binaries
-JENA_VERSION := 4.6.1
+JENA_VERSION := 4.7.0
 
 .PHONY: all clean start stop
 
