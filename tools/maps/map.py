@@ -364,7 +364,7 @@ def main() -> None:
 
     Path(args.directory).mkdir(exist_ok=True)
 
-    g = Graph()
+    g = Graph(bind_namespaces="rdflib")
     bind_prefixes(g)
     g.parse(args.dataset)
     info("Loading state geometry ...")
