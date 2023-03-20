@@ -1,29 +1,29 @@
 #! ./tools/maps/venv/bin/python3
 
 import matplotlib
-from rdflib.query import ResultRow
 
 # don't use matplotlib GUI
 matplotlib.use("agg")
 
-import matplotlib.pyplot as plt
-import argparse
-import fiona
-import itertools
-import json
-import shutil
-import sys
-from math import factorial
-from matplotlib.collections import LineCollection
-from os import path
-from patch import PolygonPatch
-from pathlib import Path
-from rdflib import Graph, Namespace, URIRef
-from shapely.geometry import shape, Point, Polygon, MultiPolygon
-from shapely.geometry.base import BaseGeometry
-from shapely.ops import unary_union
-from tqdm import tqdm
-from typing import Callable, NoReturn, Optional, Union, cast
+import matplotlib.pyplot as plt  # noqa: E402
+import argparse  # noqa: E402
+import fiona  # noqa: E402
+import itertools  # noqa: E402
+import json  # noqa: E402
+import shutil  # noqa: E402
+import sys  # noqa: E402
+from math import factorial  # noqa: E402
+from matplotlib.collections import LineCollection  # noqa: E402
+from os import path  # noqa: E402
+from patch import PolygonPatch  # noqa: E402
+from pathlib import Path  # noqa: E402
+from rdflib import Graph, Namespace, URIRef  # noqa: E402
+from rdflib.query import ResultRow  # noqa: E402
+from shapely.geometry import shape, Point, Polygon, MultiPolygon  # noqa: E402
+from shapely.geometry.base import BaseGeometry  # noqa: E402
+from shapely.ops import unary_union  # noqa: E402
+from tqdm import tqdm  # noqa: E402
+from typing import Callable, NoReturn, Optional, Union, cast  # noqa: E402
 
 DPI = 560
 LW = 0.2
@@ -151,7 +151,7 @@ def load_checked_places() -> set[str]:
         with open(GEOMETRY_CHECK_PROGRESS_FILE) as f:
             return set(json.load(f))
     except FileNotFoundError:
-        return set([])
+        return set()
 
 
 def dump_checked_places(places: set[str]) -> None:
@@ -219,7 +219,7 @@ def get_borders(
             if i.geom_type == "MultiLineString":
                 for line in i.geoms:
                     x, y = line.xy
-                    borders.append(list(zip(x, y)))
+                    borders.append(list(zip(x, y)))  # noqa: B905 because < python 3.10
     return borders
 
 
@@ -301,15 +301,12 @@ def make_place_maps(
     state: MultiPolygon,
     directory: str,
 ) -> None:
-
     for uri, (geometry, place_counties) in tqdm(places.items()):
-
         ncgid = uri.removeprefix(NCP)
         filename_c = f"{directory}/{ncgid}-counties.png"
         filename_p = f"{directory}/{ncgid}.png"
 
         if not path.exists(filename_c):
-
             shape, lines = None, None
 
             county_geometries = [counties[c] for c in place_counties if c in counties]
@@ -342,7 +339,7 @@ def make_place_maps(
                 axes.add_patch(PolygonPatch(shape, fc="#fefb00", ec="#959595", lw=LW))
                 if lines is not None:
                     axes.add_collection(lines)
-                if isinstance(geometry, Point):
+                if geometry is not None and isinstance(geometry, Point):
                     axes.plot(
                         geometry.x, geometry.y, marker="o", markersize=1.5, color="k"
                     )
@@ -353,7 +350,6 @@ def make_place_maps(
 
 
 def main() -> None:
-
     parser = argparse.ArgumentParser()
     parser.add_argument("directory", help="map images output directory")
     parser.add_argument("dataset", help="NCG dataset in Turtle format")
