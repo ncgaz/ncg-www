@@ -248,7 +248,7 @@ def get_borders(
             if i.geom_type == "MultiLineString":
                 for line in i.geoms:
                     x, y = line.xy
-                    borders.append(list(zip(x, y)))
+                    borders.append(list(zip(x, y)))  # noqa: B905 (python < 3.10)
     return borders
 
 
