@@ -153,7 +153,7 @@ def load_checked_places() -> set[str]:
         with open(GEOMETRY_CHECK_PROGRESS_FILE) as f:
             return set(json.load(f))
     except FileNotFoundError:
-        return set([])
+        return set()
 
 
 def dump_checked_places(places: set[str]) -> None:
