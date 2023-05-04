@@ -40,6 +40,7 @@ def bind_prefixes(g: Graph) -> None:
     g.bind("ncp", NCP)
     g.bind("ncv", Namespace("http://n2t.net/ark:/39333/ncg/vocab#"))
     g.bind("nct", Namespace("http://n2t.net/ark:/39333/ncg/type#"))
+    g.bind("ncgaz", Namespace("http://n2t.net/ark:/39333/ncg/"))
     g.bind("geojson", Namespace("https://purl.org/geojson/vocab#"))
 
 
@@ -115,11 +116,19 @@ def load_places(g: Graph) -> dict[URIRef, tuple[Optional[BaseGeometry], list[URI
     results = g.query(
         """
 SELECT ?place ?county ?geojson WHERE {
-  ?place ncv:county ?county .
-  { ?county dcterms:type nct:county }
-  UNION
-  { ?county dcterms:type nct:borderingCounty }
+  ncgaz:dataset rdfs:member ?place .
+
+  OPTIONAL {
+    ?place ncv:county ?county .
+    { ?county dcterms:type nct:county }
+    UNION
+    { ?county dcterms:type nct:borderingCounty }
+  }
+
   OPTIONAL { ?place geojson:geometry ?geojson }
+
+  FILTER NOT EXISTS { ?place dcterms:type nct:county }
+  FILTER NOT EXISTS { ?place dcterms:type nct:borderingCounty }
 }
 """
     )
@@ -136,7 +145,8 @@ SELECT ?place ?county ?geojson WHERE {
 
             places[row.place] = (geometry, [])
 
-        places[row.place][1].append(row.county)
+        if row.county is not None:
+            places[row.place][1].append(row.county)
 
     return places
 
@@ -277,7 +287,7 @@ def make_county_maps(
 
 
 def make_multicounty_map(
-    geometry: BaseGeometry,
+    geometry: Optional[BaseGeometry],
     multicounty: BaseGeometry,
     borders: list[list[tuple[float, float]]],
     state: MultiPolygon,
@@ -287,7 +297,7 @@ def make_multicounty_map(
     axes.add_patch(PolygonPatch(multicounty, fc="#fefb00", ec="none"))
     axes.add_patch(PolygonPatch(state, fc="none", ec="#959595", lw=LW))
     axes.add_collection(LineCollection(borders, colors="#959595", lw=LW))
-    if isinstance(geometry, Point):
+    if geometry is not None and isinstance(geometry, Point):
         axes.plot(geometry.x, geometry.y, marker="o", markersize=1.5, color="k")
     plt.savefig(filename, dpi=DPI, transparent=True)
     plt.clf()
@@ -382,18 +392,22 @@ def make_place_maps(
                 axes.add_patch(PolygonPatch(shape, fc="#fefb00", ec="#959595", lw=LW))
                 if lines is not None:
                     axes.add_collection(lines)
-                if isinstance(geometry, Point):
-                    axes.plot(
-                        geometry.x, geometry.y, marker="o", markersize=1.5, color="k"
-                    )
-                # TODO plot polygon geometries
+                if geometry is not None:
+                    if isinstance(geometry, Point):
+                        axes.plot(
+                            geometry.x,
+                            geometry.y,
+                            marker="o",
+                            markersize=1.5,
+                            color="k",
+                        )
+                    # TODO plot polygon geometries
                 plt.savefig(filename_p, dpi=DPI, transparent=True)
                 plt.clf()
                 plt.close()
 
 
 def main() -> None:
-
     parser = argparse.ArgumentParser()
     parser.add_argument("directory", help="map images output directory")
     parser.add_argument("dataset", help="NCG dataset in Turtle format")
