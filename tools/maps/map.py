@@ -161,6 +161,15 @@ def dump_checked_places(places: set[str]) -> None:
         json.dump(list(places), f)
 
 
+def find_place_containing_point(
+    point: Point, places: dict[URIRef, MultiPolygon]
+) -> Optional[URIRef]:
+    for uri, mp in places.items():
+        if mp.buffer(0.01).contains(point):
+            return uri
+    return None
+
+
 def check_geometries(
     places: dict[URIRef, tuple[Optional[BaseGeometry], list[URIRef]]],
     counties: dict[URIRef, MultiPolygon],
@@ -183,7 +192,14 @@ def check_geometries(
                 if not any(
                     (cg.buffer(0.01).contains(geometry) for cg in county_geometries)
                 ):
-                    on_problem(f"Point for {ncgid} is not in any of its counties")
+                    county = find_place_containing_point(geometry, counties)
+                    if county is None:
+                        msg = f"Point for {ncgid} is not in any county"
+                    else:
+                        cid = county.removeprefix(NCP)
+                        msg = f"""Point is in a county, but there is no corresponding triple:
+ncp:{ncgid} ncv:county ncp:{cid} ."""
+                    on_problem(msg)
             elif isinstance(geometry, Polygon):
                 explicit_counties = set(place_counties)
                 implicit_counties = {
