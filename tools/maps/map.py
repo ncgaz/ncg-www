@@ -241,6 +241,7 @@ def get_borders(
         itertools.combinations(mp.geoms, 2),
         total=(factorial(n) / factorial(2) / factorial(n - 2)),
         disable=(not show_progress),
+        file=sys.stdout,
     ):
         if p1.touches(p2):
             i = p1.intersection(p2)
