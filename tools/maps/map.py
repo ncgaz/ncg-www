@@ -1,5 +1,7 @@
 #! ./tools/maps/venv/bin/python3
 
+# ruff: noqa: E402 (allow imports not at top of file)
+
 import matplotlib
 
 # don't use matplotlib GUI
