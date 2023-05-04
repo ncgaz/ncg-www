@@ -44,7 +44,7 @@ def bind_prefixes(g: Graph) -> None:
 
 
 def info(s: str) -> None:
-    print(s, file=sys.stderr)
+    print(s, file=sys.stdout)
 
 
 def warn(s: str) -> None:
@@ -98,7 +98,7 @@ def load_counties(g: Graph, geodbs: list[str]) -> dict[URIRef, MultiPolygon]:
     counties = {}
     for geodb in geodbs:
         with fiona.open(geodb, layer="GU_CountyOrEquivalent") as c:
-            for r in tqdm(c):
+            for r in tqdm(c, file=sys.stdout):
                 state_name = r["properties"]["state_name"]
                 county_name = r["properties"]["county_name"]
                 if state_name == "North Carolina":
@@ -123,7 +123,7 @@ SELECT ?place ?county ?geojson WHERE {
 }
 """
     )
-    for row in tqdm(results):
+    for row in tqdm(results, file=sys.stdout):
         row = cast(ResultRow, row)
         if row.place not in places:
             geometry = None
@@ -168,7 +168,7 @@ def check_geometries(
 ) -> None:
     checked_places = load_checked_places()
     try:
-        for uri, (geometry, place_counties) in tqdm(places.items()):
+        for uri, (geometry, place_counties) in tqdm(places.items(), file=sys.stdout):
             ncgid = uri.removeprefix(NCP)
             if geometry is None:
                 pass
@@ -248,7 +248,7 @@ def make_county_maps(
     axes.add_patch(PolygonPatch(state, fc="none", ec="#959595", lw=LW))
     axes.add_collection(LineCollection(borders, colors="#959595", lw=LW))
 
-    for uri, mp in tqdm(counties.items()):
+    for uri, mp in tqdm(counties.items(), file=sys.stdout):
         filename = f"{directory}/{uri.removeprefix(NCP)}.png"
         if not path.exists(filename):
             patch = PolygonPatch(mp, fc="#fefb00", ec="none", zorder=0)
@@ -303,9 +303,7 @@ def make_place_maps(
     state: MultiPolygon,
     directory: str,
 ) -> None:
-
-    for uri, (geometry, place_counties) in tqdm(places.items()):
-
+    for uri, (geometry, place_counties) in tqdm(places.items(), file=sys.stdout):
         ncgid = uri.removeprefix(NCP)
         filename_c = f"{directory}/{ncgid}-counties.png"
         filename_p = f"{directory}/{ncgid}.png"
