@@ -1,4 +1,4 @@
-name: compile dataset
+name: build site
 on: [push]
 jobs:
   build-site:
