@@ -7,7 +7,7 @@ PREFIX skosxl:  <http://www.w3.org/2008/05/skos-xl#>
 SELECT
 ?placeid
 ?placename
-?type
+(?type AS ?group)
 
 WHERE {
   ?placeuri

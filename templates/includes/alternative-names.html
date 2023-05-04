@@ -1,0 +1,6 @@
+<div>
+  {{ $altnames := split .altnames "|" }}
+  Also known as: {{ range $index, $altname := $altnames }}
+  {{- if $index }}, {{ end }}{{ $altname -}}
+  {{ end }}
+</div>

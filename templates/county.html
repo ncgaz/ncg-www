@@ -6,5 +6,5 @@
 <h1>{{ .placename }}</h1>
 <div class="mb">{{ .description }}</div>
 <img class="mb" width="560" height="196" src="maps/{{ .placeid }}.png">
-{{ include "places-by-type.html" (query "places-by-county.rq" .placeuri) }}
+{{ include "includes/grouped-places.html" (query "places-in-county.rq" .placeuri) }}
 {{ end }}

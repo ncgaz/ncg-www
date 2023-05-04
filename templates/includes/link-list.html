@@ -1,0 +1,8 @@
+{{ $links := split . "|" }}
+{{ range $index, $type := $links }}
+{{- if $index -}}
+{{- if eq (add $index 1) (len $links) }} and {{ else }}, {{ end }}
+{{- end -}}
+{{- $parts := split $type ">" -}}
+<a href="{{ index $parts 0 }}.html">{{ index $parts 1 }}</a>
+{{- end }}

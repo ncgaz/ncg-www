@@ -1,0 +1,6 @@
+{{ if .counties }}
+<img width="560" height="196" src="maps/{{ .placeid }}-counties.png">
+{{ end }}
+{{ if or .location (eq .bordering_county.String "true")  }}
+<img width="560" height="196" src="maps/{{ .placeid }}.png">
+{{ end }}

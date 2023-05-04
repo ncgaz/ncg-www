@@ -1,9 +1,9 @@
 <div class="mb">
-{{ $type := "" }}
+{{ $group := "" }}
 {{ range . }}
-  {{ if ne (print .type) $type }}
-    <h2>{{ .type }}</h2>
-    {{ $type = (print .type) }}
+  {{ if ne (print .group) $group }}
+    <h2>{{ .group }}</h2>
+    {{ $group = (print .group) }}
   {{ end }}
   <a href="{{ .placeid }}.html">{{ .placename }}</a><br>
 {{ end }}

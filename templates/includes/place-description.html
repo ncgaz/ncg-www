@@ -1,0 +1,13 @@
+{{ if eq .offensive_desc.String "true" }}
+<div class="clickable" onclick="toggleHidden(this)">
+  <div class="warning">
+    The description of this place includes highly offensive racial
+    slurs. Tap or click to show or hide this description.
+  </div>
+{{ end }}
+<div class="mb{{ if eq .offensive_desc.String "true" }} offensive hidden{{ end }}">
+  {{ .description }}
+</div>
+{{ if eq .offensive_desc.String "true" }}
+</div>
+{{ end }}

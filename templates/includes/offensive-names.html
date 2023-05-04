@@ -1,0 +1,13 @@
+<div class="clickable" onclick="toggleHidden(this)">
+  <div class="warning">
+    Some of the names by which this place has been known include
+    highly offensive racial slurs. Tap or click to show or hide
+    these offensive names.
+  </div>
+<div class="offensive hidden">
+  {{ $offnames := split .offnames "|" }}
+  Also known as: {{ range $index, $offname := $offnames }}
+  {{- if $index }}, {{ end }}{{ $offname -}}
+  {{ end }}
+</div>
+</div>

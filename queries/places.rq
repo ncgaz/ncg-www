@@ -1,5 +1,6 @@
 PREFIX afn:     <http://jena.apache.org/ARQ/function#>
 PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX geojson: <https://purl.org/geojson/vocab#>
 PREFIX nct:     <http://n2t.net/ark:/39333/ncg/type#>
 PREFIX ncv:     <http://n2t.net/ark:/39333/ncg/vocab#>
 PREFIX rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
@@ -10,7 +11,12 @@ SELECT
 ?placeid
 ?placename
 ?description
-(GROUP_CONCAT(?type;separator="|") as ?types)
+?location
+?bordering_county
+(GROUP_CONCAT(DISTINCT ?type;separator="|") as ?types)
+(GROUP_CONCAT(DISTINCT ?county;separator="|") as ?counties)
+(GROUP_CONCAT(DISTINCT ?altname;separator="|") as ?altnames)
+(GROUP_CONCAT(DISTINCT ?offname;separator="|") as ?offnames)
 
 WHERE {
   ?typeuri a skos:Concept ;
@@ -21,15 +27,41 @@ WHERE {
     skos:prefLabel ?placename ;
     skos:note ?note .
 
-  FILTER NOT EXISTS { ?placeuri dcterms:type nct:county }
-  FILTER NOT EXISTS {
-    ?placeuri ncv:county ?countyuri .
-    ?countyuri dcterms:type nct:county .
+  OPTIONAL {
+    ?placeuri skos:altLabel ?altname .
   }
+
+  OPTIONAL {
+    ?placeuri ncv:offensiveLabel ?offname .
+  }
+
+  OPTIONAL {
+    ?placeuri ncv:county ?countyuri .
+
+    ?countyuri
+      dcterms:type nct:county ;
+      skos:prefLabel ?countyname .
+  }
+
+  OPTIONAL {
+    ?placeuri geojson:geometry ?location  .
+  }
+
+  FILTER NOT EXISTS { ?placeuri dcterms:type nct:county }
+
+  BIND (EXISTS {
+    ?placeuri dcterms:type nct:borderingCounty .
+  } AS ?bordering_county)
 
   BIND (afn:localname(?placeuri) AS ?placeid)
   BIND (CONCAT(afn:localname(?typeuri), ">", ?typename) AS ?type)
+  BIND (CONCAT(afn:localname(?countyuri), ">", ?countyname) AS ?county)
   BIND (CONCAT(IF(REGEX(?note, "^[A-Z]"), "", "… "), ?note) AS ?description)
 }
 
-GROUP BY ?placeid ?placename ?description
+GROUP BY
+?placeid
+?placename
+?description
+?location
+?bordering_county

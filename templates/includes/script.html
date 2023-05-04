@@ -1,0 +1,11 @@
+{{ if eq .offensive.String "true" }}
+<script>
+function toggleHidden(e) {
+  const elements = e.getElementsByClassName("offensive")
+  for (let i = 0; i < elements.length; i++) {
+    elements[i].classList.toggle("hidden")
+    elements[i].classList.toggle("visible")
+  }
+}
+</script>
+{{ end }}

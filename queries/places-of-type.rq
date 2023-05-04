@@ -7,7 +7,7 @@ PREFIX skos:    <http://www.w3.org/2004/02/skos/core#>
 SELECT
 ?placeid
 ?placename
-?countyname
+(?countyname AS ?group)
 
 WHERE {
   ?placeuri
@@ -16,7 +16,7 @@ WHERE {
 
   OPTIONAL {
     ?placeuri ncv:county ?countyuri .
-    ?countyuri a nct:County ;
+    ?countyuri dcterms:type nct:county ;
     skos:prefLabel ?countyname .
   }
 

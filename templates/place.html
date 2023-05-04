@@ -3,25 +3,23 @@
 {{ define "title" }} / {{ .placename }}{{ end }}
 
 {{ define "content" }}
-<h1>{{ .placename }}</h1>
-<div class="mb">
-{{ $borderCounty := false }}
-{{ $types := split .types "|" }}
-A {{ range $index, $type := $types }}
-  {{- if $index -}}
-    {{- if eq (add $index 1) (len $types) }} and {{ else }}, {{ end }}
-  {{- end -}}
-  {{- $parts := split $type ">" -}}
-  <a href="{{ index $parts 0 }}.html">{{ index $parts 1 }}</a>
-  {{- if eq "borderingCounty" (index $parts 0) -}}
-    {{ if not $borderCounty }}
-      {{ $borderCounty = true }}
-    {{ end }}
-  {{- end -}}
-{{- end }}
+
+{{ include "includes/place-header.html" . }}
+{{ if .altnames }}
+{{ include "includes/alternative-names.html" . }}
+{{ end }}
+{{ if .offnames }}
+{{ include "includes/offensive-names.html" . }}
+{{ end }}
+
+<div class="my">
+A {{ include "includes/link-list.html" .types }}
+{{ if .counties }}
+in {{ include "includes/link-list.html" .counties }}
+{{ end }}
 </div>
-<div class="mb">{{ .description }}</div>
-{{ if $borderCounty }}
-<img class="mb" width="560" height="196" src="maps/{{ .placeid }}.png">
-{{ end }}
-{{ end }}
+
+{{ include "includes/place-description.html" . }}
+{{ include "includes/place-maps.html" . }}
+
+{{ end }} {{/* end content */}}

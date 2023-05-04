@@ -4,5 +4,5 @@
 
 {{ define "content" }}
 <h1>{{ .type }}</h1>
-{{ include "places-by-county.html" (query "places-by-type.rq" .typeuri) }}
+{{ include "includes/grouped-places.html" (query "places-of-type.rq" .typeuri) }}
 {{ end }}
