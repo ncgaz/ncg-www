@@ -296,6 +296,44 @@ def make_single_county_map(
     plt.close()
 
 
+def make_shape_and_lines(
+    geometry: Optional[BaseGeometry],
+    counties: list[URIRef],
+    county_geometries: list[MultiPolygon],
+    borders: list[list[tuple[float, float]]],
+    state_geometry: MultiPolygon,
+    directory: str,
+    filename: str,
+) -> tuple[Optional[MultiPolygon], Optional[LineCollection]]:
+    shape, lines = None, None
+
+    if len(county_geometries) == 0:
+        if geometry is not None:
+            shape = state_geometry
+
+    elif len(county_geometries) == 1:
+        county = county_geometries[0]
+
+        shutil.copyfile(f"{directory}/{counties[0].removeprefix(NCP)}.png", filename)
+
+        if geometry is not None:
+            shape = county
+
+    elif len(county_geometries) > 1:
+        union = unary_union(county_geometries)
+        if union is not None:
+            make_multicounty_map(geometry, union, borders, state_geometry, filename)
+
+            shape = union
+            lines = LineCollection(
+                get_borders(county_geometries, show_progress=False),
+                colors="#959595",
+                lw=LW,
+            )
+
+    return shape, lines
+
+
 def make_place_maps(
     places: dict[URIRef, tuple[Optional[BaseGeometry], list[URIRef]]],
     counties: dict[URIRef, MultiPolygon],
@@ -309,33 +347,19 @@ def make_place_maps(
         filename_p = f"{directory}/{ncgid}.png"
 
         if not path.exists(filename_c):
-
-            shape, lines = None, None
-
             county_geometries = [counties[c] for c in place_counties if c in counties]
             if not len(county_geometries) == len(place_counties):
                 err(f"Not all counties of {ncgid} have geometries")
 
-            if len(place_counties) > 1:
-                union = unary_union(county_geometries)
-                if geometry is not None and union is not None:
-                    make_multicounty_map(geometry, union, borders, state, filename_c)
-
-                    shape = union
-                    lines = LineCollection(
-                        get_borders(county_geometries, show_progress=False),
-                        colors="#959595",
-                        lw=LW,
-                    )
-            else:
-                county = county_geometries[0]
-
-                shutil.copyfile(
-                    f"{directory}/{place_counties[0].removeprefix(NCP)}.png", filename_c
-                )
-
-                if geometry is not None:
-                    shape = county
+            shape, lines = make_shape_and_lines(
+                geometry,
+                place_counties,
+                county_geometries,
+                borders,
+                state,
+                directory,
+                filename_c,
+            )
 
             if shape is not None:
                 axes = setup_plot(shape, padding=0.050)
