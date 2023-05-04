@@ -1,7 +1,6 @@
 #! ./tools/maps/venv/bin/python3
 
 import matplotlib
-from rdflib.query import ResultRow
 
 # don't use matplotlib GUI
 matplotlib.use("agg")
@@ -19,6 +18,7 @@ from os import path
 from patch import PolygonPatch
 from pathlib import Path
 from rdflib import Graph, Namespace, URIRef
+from rdflib.query import ResultRow
 from shapely.geometry import shape, Point, Polygon, MultiPolygon
 from shapely.geometry.base import BaseGeometry
 from shapely.ops import unary_union
