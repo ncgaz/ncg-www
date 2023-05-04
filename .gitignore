@@ -2,6 +2,7 @@
 .snowman
 data
 site
+logs
 static/maps
 tools/maps/__pycache__
 tools/maps/venv

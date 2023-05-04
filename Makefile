@@ -25,7 +25,7 @@ clean:
 	rm -rf site .snowman
 
 superclean: clean
-	rm -rf data static/maps
+	rm -rf data logs static/maps
 	$(MAKE) -s -C tools/maps clean
 	$(MAKE) -s -C tools/fuseki clean
 	$(MAKE) -s -C tools/snowman clean
@@ -54,8 +54,11 @@ data/GovtUnit_Georgia_State_GDB.zip \
 data/GovtUnit_Tennessee_State_GDB.zip \
 data/GovtUnit_Virginia_State_GDB.zip \
 | tools/maps
+	mkdir -p logs
+	touch logs/maps.log
 	./tools/maps/venv/bin/python -W error \
-	./tools/maps/map.py --geometry-check error static/maps $^
+	./tools/maps/map.py --geometry-check error static/maps $^ \
+	2>> logs/maps.log
 	touch $@
 
 site/index.html: \
