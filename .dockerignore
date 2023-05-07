@@ -1,0 +1,12 @@
+# flyctl launch added from .gitignore
+**/.DS_Store
+**/.snowman
+**/data
+**/logs
+**/static/maps
+**/tools/maps/__pycache__
+**/tools/maps/venv
+**/tools/fuseki/*
+!**/tools/fuseki/Makefile
+**/tools/snowman/snowman
+fly.toml

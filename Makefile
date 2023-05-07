@@ -33,6 +33,9 @@ superclean: clean
 serve: site/index.html
 	./tools/snowman/snowman server
 
+deploy: site/index.html
+	fly deploy
+
 tools/maps tools/fuseki tools/snowman:
 	@$(MAKE) -s -C $@
 
