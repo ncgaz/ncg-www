@@ -70,6 +70,7 @@ $(wildcard *.yaml) \
 $(wildcard queries/*.rq) \
 $(wildcard templates/*.html) \
 $(wildcard templates/layouts/*.html) \
+$(wildcard templates/includes/*.html) \
 | tools/fuseki tools/snowman
 ifeq ($(START_FUSEKI),true)
 	$(MAKE) -s -C tools/fuseki start
