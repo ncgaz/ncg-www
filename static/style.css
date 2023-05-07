@@ -1,3 +1,7 @@
+:root {
+    --very-dark-gray: #4d4d4d;
+    --weak-red: rgb(255 166 166);
+}
 *,
 ::before,
 ::after { box-sizing: border-box; }
@@ -87,7 +91,7 @@ section {
     cursor: pointer;
 }
 .warning {
-    background-color: rgb(254 92 92);
+    background-color: var(--weak-red);
     padding: 0.5em;
 }
 .hidden {
@@ -95,4 +99,7 @@ section {
 }
 .visible {
     visibility: visible;
+}
+.quiet {
+    color: var(--very-dark-gray);
 }

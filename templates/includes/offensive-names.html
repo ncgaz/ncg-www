@@ -4,7 +4,7 @@
     highly offensive racial slurs. Tap or click to show or hide
     these offensive names.
   </div>
-<div class="offensive hidden">
+<div class="offensive hidden quiet">
   {{ $offnames := split .offnames "|" }}
   Also known as: {{ range $index, $offname := $offnames }}
   {{- if $index }}, {{ end }}{{ $offname -}}
