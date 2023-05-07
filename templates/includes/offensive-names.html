@@ -1,3 +1,12 @@
+<script>
+function toggleHidden(e) {
+  const elements = e.getElementsByClassName("offensive")
+  for (let i = 0; i < elements.length; i++) {
+    elements[i].classList.toggle("hidden")
+    elements[i].classList.toggle("visible")
+  }
+}
+</script>
 <div class="clickable" onclick="toggleHidden(this)">
   <div class="warning">
     Some of the names by which this place has been known include
