@@ -1,4 +1,4 @@
-Fiona==1.9.3
+Fiona==1.9.4
 Shapely==2.0.1
 matplotlib==3.7.1
 rdflib==6.3.2
