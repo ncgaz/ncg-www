@@ -12,4 +12,4 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
-      - run: make tools/snowman && ./tools/snowman/snowman --help
+      - run: make all
