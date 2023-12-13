@@ -257,7 +257,7 @@ def setup_plot(shape: BaseGeometry, padding: float = 0.1):
     w, h = maxx - minx, maxy - miny
     # num=1 and clear=True keep from reallocating a new figure each time
     fig = plt.figure(figsize=MAPSIZE, frameon=False, num=1, clear=True)
-    axes = fig.add_axes([0, 0, 1, 1])
+    axes = fig.add_axes((0, 0, 1, 1))
     axes.set_xlim(minx - padding * w, maxx + padding * w)
     axes.set_ylim(miny - padding * h, maxy + padding * h)
     axes.set_aspect("equal")
