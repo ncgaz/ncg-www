@@ -152,7 +152,7 @@ SELECT ?place ?county ?geojson WHERE {
 
 
 GEOMETRY_CHECK_EXCEPTIONS = [
-    "NCG02559",  # Cape Lookout Shoals, in the ocean off the coast of Carteret County
+    "8vxvvgzjdxm8qbk8mxcbw",  # Cape Lookout Shoals, in the ocean off the coast of Carteret County
 ]
 
 GEOMETRY_CHECK_PROGRESS_FILE = "data/checked-geometries.json"
