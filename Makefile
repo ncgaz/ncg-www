@@ -80,7 +80,7 @@ endif
 	./tools/snowman/snowman build \
 	| tee .snowman/build_log.txt \
 	| grep -vE "^Issuing parameterized query" \
-	| grep -vE "^Rendered page at site/NCG[[:digit:]]+\.html$$"
+	| grep -vE "^Rendered page at site/[a-z0-9]+\.html$$"
 ifeq ($(START_FUSEKI),true)
 	$(MAKE) -s -C tools/fuseki stop
 endif
