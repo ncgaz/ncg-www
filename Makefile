@@ -34,7 +34,7 @@ serve: site/index.html
 	./tools/snowman/snowman server
 
 deploy: site/index.html
-	fly deploy
+	caffeinate -s fly deploy
 
 tools/maps tools/fuseki tools/snowman:
 	@$(MAKE) -s -C $@
@@ -59,6 +59,7 @@ data/GovtUnit_Virginia_State_GDB.zip \
 | tools/maps
 	mkdir -p logs
 	touch logs/maps.log
+	caffeinate -s \
 	./tools/maps/venv/bin/python -W error \
 	./tools/maps/map.py --geometry-check error static/maps $^ \
 	2>> logs/maps.log
