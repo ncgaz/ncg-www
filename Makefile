@@ -65,7 +65,7 @@ data/GovtUnit_Virginia_State_GDB.zip \
 	./tools/maps/venv/bin/python -W error \
 	./tools/maps/map.py --geometry-check error static/maps $^ \
 	2>> logs/maps.log \
-	|| cat logs/maps.log && exit 1
+	|| ( cat logs/maps.log && exit 1 )
 	touch $@
 
 site/index.html: \
