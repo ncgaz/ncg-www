@@ -1,4 +1,3 @@
-PREFIX afn:     <http://jena.apache.org/ARQ/function#>
 PREFIX dcterms: <http://purl.org/dc/terms/>
 PREFIX ncv:     <http://n2t.net/ark:/39333/ncg/vocab#>
 PREFIX skos:    <http://www.w3.org/2004/02/skos/core#>
@@ -18,7 +17,7 @@ WHERE {
   ?typeuri a skos:Concept ;
     (skosxl:prefLabel/ncv:plural/skosxl:literalForm) ?type .
 
-  BIND (afn:localname(?placeuri) AS ?placeid)
+  BIND (REPLACE(STR(?placeuri), "^(.*)/([^/]*)$", "$2") AS ?placeid)
 }
 
 ORDER BY LCASE(?type) ?placename

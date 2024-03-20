@@ -1,4 +1,3 @@
-PREFIX afn:     <http://jena.apache.org/ARQ/function#>
 PREFIX dcterms: <http://purl.org/dc/terms/>
 PREFIX geojson: <https://purl.org/geojson/vocab#>
 PREFIX nct:     <http://n2t.net/ark:/39333/ncg/type#>
@@ -53,9 +52,12 @@ WHERE {
     ?placeuri dcterms:type nct:borderingCounty .
   } AS ?bordering_county)
 
-  BIND (afn:localname(?placeuri) AS ?placeid)
-  BIND (CONCAT(afn:localname(?typeuri), ">", ?typename) AS ?type)
-  BIND (CONCAT(afn:localname(?countyuri), ">", ?countyname) AS ?county)
+  BIND (REPLACE(STR(?placeuri),  "^(.*)/([^/]*)$", "$2") AS ?placeid)
+  BIND (REPLACE(STR(?typeuri),   "^(.*)/([^/]*)$", "$2") AS ?typeid)
+  BIND (REPLACE(STR(?countyuri), "^(.*)/([^/]*)$", "$2") AS ?countyid)
+
+  BIND (CONCAT(?typeid, ">", ?typename) AS ?type)
+  BIND (CONCAT(?countyid, ">", ?countyname) AS ?county)
   BIND (CONCAT(IF(REGEX(?note, "^[A-Z]"), "", "… "), ?note) AS ?description)
 }
 

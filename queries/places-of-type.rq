@@ -1,4 +1,3 @@
-PREFIX afn:     <http://jena.apache.org/ARQ/function#>
 PREFIX dcterms: <http://purl.org/dc/terms/>
 PREFIX nct:     <http://n2t.net/ark:/39333/ncg/type#>
 PREFIX ncv:     <http://n2t.net/ark:/39333/ncg/vocab#>
@@ -20,7 +19,7 @@ WHERE {
     skos:prefLabel ?countyname .
   }
 
-  BIND (afn:localname(?placeuri) AS ?placeid)
+  BIND (REPLACE(STR(?placeuri), "^(.*)/([^/]*)$", "$2") AS ?placeid)
 }
 
 ORDER BY ?countyname ?placename
