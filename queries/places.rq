@@ -52,8 +52,8 @@ WHERE {
     ?placeuri dcterms:type nct:borderingCounty .
   } AS ?bordering_county)
 
+  BIND (REPLACE(STR(?typeuri),   "^(.*)#([^#]*)$", "$2") AS ?typeid)
   BIND (REPLACE(STR(?placeuri),  "^(.*)/([^/]*)$", "$2") AS ?placeid)
-  BIND (REPLACE(STR(?typeuri),   "^(.*)/([^/]*)$", "$2") AS ?typeid)
   BIND (REPLACE(STR(?countyuri), "^(.*)/([^/]*)$", "$2") AS ?countyid)
 
   BIND (CONCAT(?typeid, ">", ?typename) AS ?type)

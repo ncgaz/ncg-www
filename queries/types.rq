@@ -12,7 +12,7 @@ WHERE {
   ?typeuri a skos:Concept ;
     (skosxl:prefLabel/ncv:plural/skosxl:literalForm) ?type
 
-  BIND (LCASE(REPLACE(STR(?typeuri), "^(.*)/([^/]*)$", "$2")) AS ?typeid)
+  BIND (LCASE(REPLACE(STR(?typeuri), "^(.*)#([^#]*)$", "$2")) AS ?typeid)
 }
 
 ORDER BY LCASE(?type)
